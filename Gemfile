@@ -14,6 +14,7 @@ end
 
 group :development do
   gem 'listen', '~> 3.3'
+  gem 'annotate', '~> 3.1', '>= 3.1.1'
 end
 
 group :test do
