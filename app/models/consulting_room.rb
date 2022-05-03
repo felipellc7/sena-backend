@@ -23,5 +23,5 @@
 #  fk_rails_...  (specialties_id => specialties.id)
 #
 class ConsultingRoom < ApplicationRecord
-  belongs_to :specialties
+  belongs_to :specialty
 end

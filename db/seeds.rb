@@ -1,28 +1,90 @@
-# This file should contain all the record creation needed to seed the database with its default values.
-# The data can then be loaded with the bin/rails db:seed command (or created alongside the database with db:setup).
-#
-# Examples:
-#
-#   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
-#   Character.create(name: 'Luke', movie: movies.first)
+# Create users
+users = [{
+  first_name: 'Alberto',
+  last_name: 'Perez',
+  dni: '1143222333',
+  email: 'aperez@gmail.com',
+  phone: '5553523',
+  gender: 'male'
+}, {
+  first_name: 'Angie',
+  last_name: 'Smith',
+  dni: '1045333222',
+  email: 'asmith@gmail.com',
+  phone: '5551956',
+  gender: 'female'
+}]
 
-# users = [{
-#   first_name: 'Juan',
-#   last_name: 'Perez',
-#   dni: '12345678',
-#   email: 'jperez@gmail.com',
-#   phone: '12345678',
-#   gender: 'male'
-# }, {
-#   first_name: 'Jane',
-#   last_name: 'Smith',
-#   dni: '87654321',
-#   email: 'jsmith@gmail.com',
-#   phone: '87654321',
-#   gender: 'female'
-# }]
+User.create(users)
 
-# users.each do | user |
-#   User.create(user)
-#   puts user
-# end
+# Create patients
+patients = [{
+  first_name: 'Karla',
+  last_name: 'Gomez',
+  dni: '1045999888',
+  email: 'kgomez@gmail.com',
+  phone: '5552324',
+  gender: 'female'
+}, {
+  first_name: 'Breiner',
+  last_name: 'Otalvaro',
+  dni: '1143777333',
+  email: 'botalvaro@gmail.com',
+  phone: '5551213',
+  gender: 'male'
+}]
+
+Patient.create(patients)
+
+# Create specialties
+specialties = [{
+  name: "Odontología General"
+}, {
+  name: "Optometría"
+}]
+
+Specialty.create(specialties)
+
+# Create doctors
+doctors = [{
+  first_name: 'Mauricio',
+  last_name: 'Buendia',
+  dni: '1143099333',
+  email: 'mbuendia@gmail.com',
+  phone: '5550903',
+  gender: 'male',
+  specialties_id: Specialty.first.id
+}, {
+  first_name: "Julia",
+  last_name: "Uribe",
+  dni: "1045987990",
+  email: "juribe@gmail.com",
+  phone: "5554325",
+  gender: "female",
+  specialties_id: Specialty.last.id
+}]
+
+Doctor.create(doctors)
+
+# Create consulting rooms
+consulting_rooms = [{
+  name: "Consultorio 1",
+  loc_country: "COLOMBIA",
+  loc_region: "ATLANTICO",
+  loc_city: "BARRANQUILLA",
+  loc_commune: "SUR",
+  loc_nomeclature: "Calle 1 # 1-1",
+  loc_description: "Consultorio de Odontología General",
+  specialties_id: Specialty.first.id
+}, {
+  name: "Consultorio 2",
+  loc_country: "COLOMBIA",
+  loc_region: "ATLANTICO",
+  loc_city: "BARRANQUILLA",
+  loc_commune: "SUR",
+  loc_nomeclature: "Calle 2 # 2-2",
+  loc_description: "Consultorio de Optometría",
+  specialties_id: Specialty.last.id
+}]
+
+ConsultingRoom.create(consulting_rooms)

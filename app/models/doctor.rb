@@ -26,7 +26,7 @@
 #
 class Doctor < ApplicationRecord
   # Asociations
-  belongs_to :specialties
+  belongs_to :specialty
   has_many :appointments
   has_many :patients, through: :appointments
   

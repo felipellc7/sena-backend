@@ -8,4 +8,6 @@
 #  updated_at :datetime         not null
 #
 class Specialty < ApplicationRecord
+  has_many :doctors
+  has_many :consulting_rooms
 end
