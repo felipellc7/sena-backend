@@ -53,7 +53,7 @@ doctors = [{
   email: 'mbuendia@gmail.com',
   phone: '5550903',
   gender: 'male',
-  specialties_id: Specialty.first.id
+  specialty_id: Specialty.first.id
 }, {
   first_name: "Julia",
   last_name: "Uribe",
@@ -61,7 +61,7 @@ doctors = [{
   email: "juribe@gmail.com",
   phone: "5554325",
   gender: "female",
-  specialties_id: Specialty.last.id
+  specialty_id: Specialty.last.id
 }]
 
 Doctor.create(doctors)
@@ -73,18 +73,59 @@ consulting_rooms = [{
   loc_region: "ATLANTICO",
   loc_city: "BARRANQUILLA",
   loc_commune: "SUR",
-  loc_nomeclature: "Calle 1 # 1-1",
+  loc_address: "Calle 1 # 1-1",
   loc_description: "Consultorio de Odontología General",
-  specialties_id: Specialty.first.id
+  specialty_id: Specialty.first.id
 }, {
   name: "Consultorio 2",
   loc_country: "COLOMBIA",
   loc_region: "ATLANTICO",
   loc_city: "BARRANQUILLA",
   loc_commune: "SUR",
-  loc_nomeclature: "Calle 2 # 2-2",
+  loc_address: "Calle 2 # 2-2",
   loc_description: "Consultorio de Optometría",
-  specialties_id: Specialty.last.id
+  specialty_id: Specialty.last.id
 }]
 
 ConsultingRoom.create(consulting_rooms)
+
+# Create schedules
+schedules = [{
+  consulting_room_id: ConsultingRoom.first.id,
+  date: Date.current().to_s,
+  time: "08:00:00",
+}, {
+  consulting_room_id: ConsultingRoom.last.id,
+  date: Date.current().to_s,
+  time: "14:00:00",
+}]
+
+Schedule.create(schedules)
+
+# Create appointments
+appointments = [{
+  patient_id: Patient.first.id,
+  doctor_id: Doctor.first.id,
+  schedule_id: Schedule.first.id,
+  status: "reserved",
+  observations: "NINGUNA",
+}, {
+  patient_id: Patient.last.id,
+  doctor_id: Doctor.last.id,
+  schedule_id: Schedule.last.id,
+  status: "in_progress",
+  observations: "NINGUNA",
+}]
+
+Appointment.create(appointments)
+
+# Create histories
+histories = [{
+  appointment_id: Appointment.last.id,
+  doctor_id: Doctor.last.id,
+  patient_id: Patient.last.id,
+  diagnosis: "Resequedad en los ojos",
+  treatment: "Control mensual por 3 meses con gotas oftalmicas",
+}]
+
+History.create(histories)

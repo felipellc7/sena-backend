@@ -3,7 +3,7 @@
 # Table name: doctors
 #
 #  id              :bigint           not null, primary key
-#  active          :boolean
+#  active          :boolean          default(TRUE)
 #  dni             :string
 #  email           :string
 #  first_name      :string
@@ -12,34 +12,34 @@
 #  last_name       :string
 #  password_digest :string
 #  phone           :string
+#  role            :string           default("doctor")
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
-#  specialties_id  :bigint           not null
+#  specialty_id    :bigint           not null
 #
 # Indexes
 #
-#  index_doctors_on_specialties_id  (specialties_id)
+#  index_doctors_on_specialty_id  (specialty_id)
 #
 # Foreign Keys
 #
-#  fk_rails_...  (specialties_id => specialties.id)
+#  fk_rails_...  (specialty_id => specialties.id)
 #
 class Doctor < ApplicationRecord
   # Asociations
   belongs_to :specialty
   has_many :appointments
-  has_many :patients, through: :appointments
-  
+
   # Validations
   validates :first_name, :last_name, :dni, :gender, :email, :phone, presence: true
   validates :dni, uniqueness: true
-  
+
   # Datatypes
   enum gender: [:male, :female]
-  
+
   # Method calls
   before_save :set_full_name
-  after_create :set_password
+  before_create :set_password
 
   def set_full_name
     self.full_name = "#{self.first_name} #{self.last_name}"

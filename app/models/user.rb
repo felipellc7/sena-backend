@@ -3,7 +3,7 @@
 # Table name: users
 #
 #  id              :bigint           not null, primary key
-#  active          :boolean
+#  active          :boolean          default(TRUE)
 #  dni             :string
 #  email           :string
 #  first_name      :string
@@ -12,6 +12,7 @@
 #  last_name       :string
 #  password_digest :string
 #  phone           :string
+#  role            :string           default("admin")
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
 #

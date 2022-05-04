@@ -8,6 +8,10 @@
 #  updated_at :datetime         not null
 #
 class Specialty < ApplicationRecord
+  # Asociations
   has_many :doctors
   has_many :consulting_rooms
+
+  # Validations
+  validates :name, presence: true
 end

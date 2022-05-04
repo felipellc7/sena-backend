@@ -6,13 +6,14 @@ namespace :sena do
       puts "Registros Actuales"
       current_total_records()
       puts "******************************"
-      User.delete_all
-      Patient.delete_all
-      Specialty.delete_all
-      Doctor.delete_all
-      ConsultingRoom.delete_all
-      Schedule.delete_all
+      History.delete_all
       Appointment.delete_all
+      Schedule.delete_all
+      ConsultingRoom.delete_all
+      Doctor.delete_all
+      Specialty.delete_all
+      Patient.delete_all
+      User.delete_all
     end
   end
   namespace :check do
@@ -36,6 +37,8 @@ namespace :sena do
       puts "Agendas: #{Schedule.all.inspect}"
       puts "****************************"
       puts "Citas: #{Appointment.all.inspect}"
+      puts "****************************"
+      puts "Historias: #{History.all.inspect}"
     end
   end
 end
@@ -48,6 +51,7 @@ def current_total_records
   consulting_rooms = ConsultingRoom.count
   schedules = Schedule.count
   appointments = Appointment.count
+  histories = History.count
   puts "Usuarios: #{users}"
   puts "Pacientes: #{patients}"
   puts "Especialidades: #{specialties}"
@@ -55,4 +59,5 @@ def current_total_records
   puts "Consultorios: #{consulting_rooms}"
   puts "Agendas: #{schedules}"
   puts "Citas: #{appointments}"
+  puts "Historias: #{histories}"
 end

@@ -3,7 +3,7 @@
 # Table name: patients
 #
 #  id              :bigint           not null, primary key
-#  active          :boolean
+#  active          :boolean          default(TRUE)
 #  dni             :string
 #  email           :string
 #  first_name      :string
@@ -12,6 +12,7 @@
 #  last_name       :string
 #  password_digest :string
 #  phone           :string
+#  role            :string           default("patient")
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
 #
@@ -28,7 +29,7 @@ class Patient < ApplicationRecord
 
   # Method calls
   before_save :set_full_name
-  after_create :set_password
+  before_create :set_password
 
   def set_full_name
     self.full_name = "#{self.first_name} #{self.last_name}"

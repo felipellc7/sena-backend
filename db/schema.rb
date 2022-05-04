@@ -10,40 +10,40 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_05_03_032458) do
+ActiveRecord::Schema.define(version: 2022_05_03_233043) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "appointments", force: :cascade do |t|
-    t.bigint "schedules_id", null: false
-    t.bigint "patients_id", null: false
-    t.bigint "doctors_id", null: false
-    t.integer "status"
+    t.bigint "schedule_id", null: false
+    t.bigint "patient_id", null: false
+    t.bigint "doctor_id", null: false
+    t.integer "status", default: 0
     t.text "observations"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["doctors_id"], name: "index_appointments_on_doctors_id"
-    t.index ["patients_id"], name: "index_appointments_on_patients_id"
-    t.index ["schedules_id"], name: "index_appointments_on_schedules_id"
+    t.index ["doctor_id"], name: "index_appointments_on_doctor_id"
+    t.index ["patient_id"], name: "index_appointments_on_patient_id"
+    t.index ["schedule_id"], name: "index_appointments_on_schedule_id"
   end
 
   create_table "consulting_rooms", force: :cascade do |t|
     t.string "name"
-    t.bigint "specialties_id", null: false
+    t.bigint "specialty_id", null: false
     t.string "loc_country"
     t.string "loc_region"
     t.string "loc_city"
     t.string "loc_commune"
-    t.string "loc_nomeclature"
+    t.string "loc_address"
     t.string "loc_description"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["specialties_id"], name: "index_consulting_rooms_on_specialties_id"
+    t.index ["specialty_id"], name: "index_consulting_rooms_on_specialty_id"
   end
 
   create_table "doctors", force: :cascade do |t|
-    t.bigint "specialties_id", null: false
+    t.bigint "specialty_id", null: false
     t.string "first_name"
     t.string "last_name"
     t.string "full_name"
@@ -52,10 +52,24 @@ ActiveRecord::Schema.define(version: 2022_05_03_032458) do
     t.string "email"
     t.string "password_digest"
     t.string "phone"
-    t.boolean "active"
+    t.boolean "active", default: true
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["specialties_id"], name: "index_doctors_on_specialties_id"
+    t.string "role", default: "doctor"
+    t.index ["specialty_id"], name: "index_doctors_on_specialty_id"
+  end
+
+  create_table "histories", force: :cascade do |t|
+    t.bigint "appointment_id", null: false
+    t.bigint "patient_id", null: false
+    t.bigint "doctor_id", null: false
+    t.text "diagnosis"
+    t.text "treatment"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["appointment_id"], name: "index_histories_on_appointment_id"
+    t.index ["doctor_id"], name: "index_histories_on_doctor_id"
+    t.index ["patient_id"], name: "index_histories_on_patient_id"
   end
 
   create_table "patients", force: :cascade do |t|
@@ -67,19 +81,20 @@ ActiveRecord::Schema.define(version: 2022_05_03_032458) do
     t.string "email"
     t.string "password_digest"
     t.string "phone"
-    t.boolean "active"
+    t.boolean "active", default: true
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "role", default: "patient"
   end
 
   create_table "schedules", force: :cascade do |t|
-    t.bigint "consulting_rooms_id", null: false
+    t.bigint "consulting_room_id", null: false
     t.date "date"
     t.time "time"
-    t.boolean "available"
+    t.boolean "available", default: true
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["consulting_rooms_id"], name: "index_schedules_on_consulting_rooms_id"
+    t.index ["consulting_room_id"], name: "index_schedules_on_consulting_room_id"
   end
 
   create_table "specialties", force: :cascade do |t|
@@ -97,15 +112,19 @@ ActiveRecord::Schema.define(version: 2022_05_03_032458) do
     t.string "email"
     t.string "password_digest"
     t.string "phone"
-    t.boolean "active"
+    t.boolean "active", default: true
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "role", default: "admin"
   end
 
-  add_foreign_key "appointments", "doctors", column: "doctors_id"
-  add_foreign_key "appointments", "patients", column: "patients_id"
-  add_foreign_key "appointments", "schedules", column: "schedules_id"
-  add_foreign_key "consulting_rooms", "specialties", column: "specialties_id"
-  add_foreign_key "doctors", "specialties", column: "specialties_id"
-  add_foreign_key "schedules", "consulting_rooms", column: "consulting_rooms_id"
+  add_foreign_key "appointments", "doctors"
+  add_foreign_key "appointments", "patients"
+  add_foreign_key "appointments", "schedules"
+  add_foreign_key "consulting_rooms", "specialties"
+  add_foreign_key "doctors", "specialties"
+  add_foreign_key "histories", "appointments"
+  add_foreign_key "histories", "doctors"
+  add_foreign_key "histories", "patients"
+  add_foreign_key "schedules", "consulting_rooms"
 end
