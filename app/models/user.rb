@@ -17,6 +17,7 @@
 #  updated_at      :datetime         not null
 #
 class User < ApplicationRecord
+  has_secure_password
   # Validations
   validates :first_name, :last_name, :dni, :gender, :email, :phone, presence: true
   validates :dni, uniqueness: true
@@ -26,13 +27,8 @@ class User < ApplicationRecord
 
   # Method calls
   before_save :set_full_name
-  before_create :set_password
 
   def set_full_name
     self.full_name = "#{self.first_name} #{self.last_name}"
-  end
-
-  def set_password
-    self.password_digest = self.dni
   end
 end

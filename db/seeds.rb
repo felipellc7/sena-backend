@@ -4,6 +4,7 @@ users = [{
   last_name: 'Perez',
   dni: '1143222333',
   email: 'aperez@gmail.com',
+  password: '1143222333',
   phone: '5553523',
   gender: 'male'
 }, {
@@ -11,6 +12,7 @@ users = [{
   last_name: 'Smith',
   dni: '1045333222',
   email: 'asmith@gmail.com',
+  password: '1045333222',
   phone: '5551956',
   gender: 'female'
 }]
@@ -23,6 +25,7 @@ patients = [{
   last_name: 'Gomez',
   dni: '1045999888',
   email: 'kgomez@gmail.com',
+  password: "1045999888",
   phone: '5552324',
   gender: 'female'
 }, {
@@ -30,6 +33,7 @@ patients = [{
   last_name: 'Otalvaro',
   dni: '1143777333',
   email: 'botalvaro@gmail.com',
+  password: "1143777333",
   phone: '5551213',
   gender: 'male'
 }]
@@ -51,6 +55,7 @@ doctors = [{
   last_name: 'Buendia',
   dni: '1143099333',
   email: 'mbuendia@gmail.com',
+  password: '1143099333',
   phone: '5550903',
   gender: 'male',
   specialty_id: Specialty.first.id
@@ -59,6 +64,7 @@ doctors = [{
   last_name: "Uribe",
   dni: "1045987990",
   email: "juribe@gmail.com",
+  password: "1045987990",
   phone: "5554325",
   gender: "female",
   specialty_id: Specialty.last.id

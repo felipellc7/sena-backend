@@ -17,6 +17,7 @@
 #  updated_at      :datetime         not null
 #
 class Patient < ApplicationRecord
+  has_secure_password
   # Asociations
   has_many :appointments
 
@@ -29,13 +30,8 @@ class Patient < ApplicationRecord
 
   # Method calls
   before_save :set_full_name
-  before_create :set_password
 
   def set_full_name
     self.full_name = "#{self.first_name} #{self.last_name}"
-  end
-
-  def set_password
-    self.password_digest = self.dni
   end
 end
