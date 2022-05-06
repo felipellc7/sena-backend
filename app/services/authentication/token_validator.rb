@@ -1,4 +1,5 @@
 require 'json_web_tokens/decode'
+include ToolsConcern
 
 module Authentication
   class TokenValidator
@@ -21,7 +22,7 @@ module Authentication
     # end
 
     def find_and_return_user
-      model_name = decoded_token['role'].capitalize
+      model_name = get_model_name_on_sign_in decoded_token['role']
       @user ||= model_name.constantize.find_by_dni(decoded_token['dni'])
     end
 

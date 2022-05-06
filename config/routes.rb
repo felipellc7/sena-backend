@@ -4,8 +4,13 @@ Rails.application.routes.draw do
       # Sign in
       post '/sign_in', to: 'authentication#sign_in'
 
-      # Quer to users
-      get '/users', to: 'users#index'
+      resources :users, param: :dni
+      resources :patients, param: :dni
+      resources :specialties
+      resources :doctors, param: :dni
+      resources :consulting_rooms
+      resources :schedules
+      resources :appointments
     end
   end
 end

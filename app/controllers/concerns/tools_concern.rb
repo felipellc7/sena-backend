@@ -17,4 +17,12 @@ module ToolsConcern
       'User'
     end
   end
+
+  def can_to_do_admin_actions
+    unless current_user.role. == 'admin'
+      render json: {
+        error: 'You are not authorized to do this action'
+      }, status: 403
+    end
+  end
 end
