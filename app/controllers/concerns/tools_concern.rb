@@ -18,6 +18,20 @@ module ToolsConcern
     end
   end
 
+  def format_pagination_response result, params
+    {
+      from: params[:from].to_i,
+      size: params[:size].to_i,
+      total: result.total_count,
+      pages: result.total_pages,
+      records: result,
+    }
+  end
+
+  def filtering_params(params)
+    JSON.parse params
+  end
+
   def can_to_do_admin_actions
     unless current_user.role. == 'admin'
       render json: {

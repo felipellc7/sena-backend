@@ -4,8 +4,12 @@ class Api::V1::DoctorsController < ApplicationController
   before_action :set_doctor, only: [:show, :update, :destroy]
 
   def index
-    @doctors = Doctor.all
-    render json: @doctors, status: 200
+    req_paginated = Doctor.page(params[:from]).per(params[:size])
+    @doctors = req_paginated
+    filtering_params(params[:filters]).each do |key, value|
+      @doctors = @doctors.public_send("filter_by_#{key}", value) if value.present?
+    end
+    render json: format_pagination_response(@doctors, params), status: 200
   end
 
   def show
