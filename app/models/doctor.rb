@@ -46,6 +46,7 @@ class Doctor < ApplicationRecord
   scope :filter_by_gender, -> (gender) { where gender: gender }
   scope :filter_by_dni, -> (dni) { where dni: dni}
   scope :filter_by_full_name, -> (full_name) { where("full_name like ?", "#{full_name.downcase}%")}
+  scope :filter_by_specialty_id, -> (specialty_id) { where specialty_id: specialty_id }
 
   private
   def set_full_name
