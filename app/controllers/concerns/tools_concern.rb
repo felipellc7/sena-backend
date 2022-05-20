@@ -24,7 +24,8 @@ module ToolsConcern
       size: params[:size].to_i,
       total: result.total_count,
       pages: result.total_pages,
-      records: result,
+      # records: result,
+      records: ActiveModelSerializers::SerializableResource.new(result),
     }
   end
 
