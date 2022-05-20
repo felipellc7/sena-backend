@@ -4,8 +4,12 @@ class Api::V1::UsersController < ApplicationController
   before_action :set_user, only: [:show, :update, :destroy]
 
   def index
-    @users = User.all
-    render json: @users, status: 200
+    req_paginated = User.page(params[:from]).per(params[:size])
+    @users = req_paginated
+    filtering_params(params[:filters]).each do |key, value|
+      @users = @users.public_send("filter_by_#{key}", value) if value.present?
+    end
+    render json: format_pagination_response(@users, params), status: 200
   end
 
   def show

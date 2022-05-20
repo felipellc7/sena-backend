@@ -4,8 +4,12 @@ class Api::V1::SpecialtiesController < ApplicationController
   before_action :set_specialty, only: [:show, :update, :destroy]
 
   def index
-    @specialties = Specialty.all
-    render json: @specialties, status: 200
+    req_paginated = Specialty.page(params[:from]).per(params[:size])
+    @specialties = req_paginated
+    filtering_params(params[:filters]).each do |key, value|
+      @specialties = @specialties.public_send("filter_by_#{key}", value) if value.present?
+    end
+    render json: format_pagination_response(@specialties, params), status: 200
   end
 
   def show

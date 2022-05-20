@@ -4,8 +4,12 @@ class Api::V1::AppointmentsController < ApplicationController
   before_action :set_appointment, only: [:show, :update, :destroy]
 
   def index
-    @appointments = Appointment.all
-    render json: @appointments, status: 200
+    req_paginated = Appointment.page(params[:from]).per(params[:size])
+    @appointments = req_paginated
+    filtering_params(params[:filters]).each do |key, value|
+      @appointments = @appointments.public_send("filter_by_#{key}", value) if value.present?
+    end
+    render json: format_pagination_response(@appointments, params), status: 200
   end
 
   def show

@@ -30,7 +30,11 @@ module ToolsConcern
   end
 
   def filtering_params(params)
-    JSON.parse params
+    unless params.nil?
+      JSON.parse params
+    else
+      {}
+    end
   end
 
   def can_to_do_admin_actions

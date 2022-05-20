@@ -4,8 +4,12 @@ class Api::V1::ConsultingRoomsController < ApplicationController
   before_action :set_consulting_room, only: [:show, :update, :destroy]
 
   def index
-    @consulting_rooms = ConsultingRoom.all
-    render json: @consulting_rooms, status: 200
+    req_paginated = ConsultingRoom.page(params[:from]).per(params[:size])
+    @consulting_rooms = req_paginated
+    filtering_params(params[:filters]).each do |key, value|
+      @consulting_rooms = @consulting_rooms.public_send("filter_by_#{key}", value) if value.present?
+    end
+    render json: format_pagination_response(@consulting_rooms, params), status: 200
   end
 
   def show
