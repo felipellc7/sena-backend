@@ -3,6 +3,7 @@ Rails.application.routes.draw do
     namespace :v1, constraints: ApiVersion.new('v1', true) do
       # Sign in
       post '/sign_in', to: 'authentication#sign_in'
+      get '/entities_count', to: 'helpers#counter_entities'
 
       resources :users, param: :dni
       resources :patients, param: :dni

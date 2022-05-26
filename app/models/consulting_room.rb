@@ -29,4 +29,20 @@ class ConsultingRoom < ApplicationRecord
 
   # Validations
   validates :name, :loc_country, :loc_region, :loc_city, :loc_commune, :loc_address, presence: true
+
+  # Method calls
+  before_save :set_downcase_fields
+
+  # Scopes
+  scope :filter_by_specialty_id, -> (specialty_id) { where specialty_id: specialty_id }
+
+  private
+  def set_downcase_fields
+    self.name.downcase!
+    self.loc_country.downcase!
+    self.loc_region.downcase!
+    self.loc_city.downcase!
+    self.loc_commune.downcase!
+    self.loc_address.downcase!
+  end
 end

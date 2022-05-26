@@ -14,4 +14,15 @@ class Specialty < ApplicationRecord
 
   # Validations
   validates :name, presence: true
+
+  # Method calls
+  before_save :set_downcase_fields
+
+  # Scopes
+  scope :filter_by_name, -> (name) { where("name like ?", "#{name.downcase}%")}
+
+  private
+  def set_downcase_fields
+    self.name.downcase!
+  end
 end
