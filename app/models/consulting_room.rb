@@ -29,6 +29,7 @@ class ConsultingRoom < ApplicationRecord
 
   # Validations
   validates :name, :loc_country, :loc_region, :loc_city, :loc_commune, :loc_address, presence: true
+  validates :name, uniqueness: true
 
   # Method calls
   before_save :set_downcase_fields
