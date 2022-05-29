@@ -31,6 +31,7 @@ class Appointment < ApplicationRecord
 
   # Validations
   validates :observations, :status, presence: true
+  validates :schedule_id, uniqueness: true
 
   # Datatypes
   enum status: [:reserved, :confirmed, :in_progress, :canceled, :closed]
@@ -38,6 +39,13 @@ class Appointment < ApplicationRecord
   # Methods calls
   before_create :check_schedule_availability
   before_save :check_valid_doctor_consulting_room
+
+  # Scopes
+  scope :filter_by_schedule_code, -> (schedule_code) { joins(:schedule).where(schedules: { code: schedule_code }) }
+  scope :filter_by_date, -> (date) { joins(:schedule).where(schedules: { date: date }) }
+  scope :filter_by_doctor_dni, -> (doctor_dni) { joins(:doctor).where(doctors: { dni: doctor_dni }) }
+  scope :filter_by_patient_dni, -> (patient_dni) { joins(:patient).where(patients: { dni: patient_dni }) }
+  scope :filter_by_status, -> (status) { where(status: status) }
 
   def check_valid_doctor_consulting_room
     if self.doctor.specialty != self.schedule.consulting_room.specialty
