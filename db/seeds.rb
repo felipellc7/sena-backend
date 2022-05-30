@@ -101,6 +101,10 @@ schedules = [{
   date: Date.current().to_s,
   time: "08:00:00",
 }, {
+  consulting_room_id: ConsultingRoom.first.id,
+  date: Date.current().to_s,
+  time: "12:00:00",
+}, {
   consulting_room_id: ConsultingRoom.last.id,
   date: Date.current().to_s,
   time: "14:00:00",

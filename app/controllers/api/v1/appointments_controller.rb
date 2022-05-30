@@ -21,7 +21,11 @@ class Api::V1::AppointmentsController < ApplicationController
   end
 
   def create
-    @appointment = Appointment.new(appointment_params)
+    @appointment = Appointment.new()
+    @appointment.schedule = Schedule.find_by_code(appointment_params[:schedule_code])
+    @appointment.patient = Patient.find_by_dni(appointment_params[:patient_dni])
+    @appointment.doctor = Doctor.find_by_dni(appointment_params[:doctor_dni])
+    @appointment.observations = appointment_params[:observations]
     if @appointment.save
       render json: @appointment, status: 201
     else
@@ -30,7 +34,11 @@ class Api::V1::AppointmentsController < ApplicationController
   end
 
   def update
-    if @appointment.update(appointment_params)
+    @appointment.schedule = Schedule.find_by_code(appointment_params[:schedule_code])
+    @appointment.patient = Patient.find_by_dni(appointment_params[:patient_dni])
+    @appointment.doctor = Doctor.find_by_dni(appointment_params[:doctor_dni])
+    @appointment.observations = appointment_params[:observations]
+    if @appointment.save
       render json: @appointment, status: 200
     else
       render json: {error: @appointment.errors.full_messages.join(', ')}, status: 400
@@ -50,9 +58,9 @@ class Api::V1::AppointmentsController < ApplicationController
     params.require(:appointment).permit(
       :status,
       :observations,
-      :doctor_id,
-      :patient_id,
-      :schedule_id,
+      :doctor_dni,
+      :patient_dni,
+      :schedule_code,
     )
   end
 

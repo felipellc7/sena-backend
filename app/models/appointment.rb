@@ -32,13 +32,13 @@ class Appointment < ApplicationRecord
   # Validations
   validates :observations, :status, presence: true
   validates :schedule_id, uniqueness: true
+  validate :check_schedule_availability, if: :check_valid_doctor_consulting_room
 
   # Datatypes
   enum status: [:reserved, :confirmed, :in_progress, :canceled, :closed]
 
-  # Methods calls
-  before_create :check_schedule_availability
-  before_save :check_valid_doctor_consulting_room
+  # Method calls
+  after_create :update_schedule_availability
 
   # Scopes
   scope :filter_by_schedule_code, -> (schedule_code) { joins(:schedule).where(schedules: { code: schedule_code }) }
@@ -47,17 +47,30 @@ class Appointment < ApplicationRecord
   scope :filter_by_patient_dni, -> (patient_dni) { joins(:patient).where(patients: { dni: patient_dni }) }
   scope :filter_by_status, -> (status) { where(status: status) }
 
-  def check_valid_doctor_consulting_room
-    if self.doctor.specialty != self.schedule.consulting_room.specialty
-      errors.add(:doctor, "is not valid for this appointment")
+  private
+  def check_schedule_availability
+    if !self.schedule.present?
+      errors.add(:schedule, "No existe una agenda con ese código")
+    else
+      if self.schedule.available == false
+        errors.add(:schedule, "No se puede reservar una agenda ya reservada")
+      end
     end
   end
 
-  def check_schedule_availability
-    if self.schedule.available == false
-      errors.add(:schedule, "is not available")
+  def check_valid_doctor_consulting_room
+    if !self.doctor.present? || !self.schedule.present?
+      errors.add(:doctor, "No existe un doctor o una agenda con ese código")
     else
-      self.schedule.update(available: false)
+      if self.doctor.specialty != self.schedule.consulting_room.specialty
+        errors.add(:doctor, "El doctor no puede atender a esa cita")
+      end
     end
+    true
+  end
+
+  def update_schedule_availability
+    self.schedule.available = false
+    self.schedule.save(validate: false)
   end
 end

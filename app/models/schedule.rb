@@ -27,7 +27,7 @@ class Schedule < ApplicationRecord
   # Validations
   validates :date, :time, presence: true
   validate :assign_schedule_code
-
+  
   # Method calls
   
   # Scopes
@@ -36,6 +36,7 @@ class Schedule < ApplicationRecord
   scope :filter_by_date, -> (date) { where(date: date) }
   scope :filter_by_time, -> (time) { where(time: time) }
   scope :filter_by_consulting_room_id, -> (consulting_room_id) { where(consulting_room_id: consulting_room_id) }
+  scope :filter_by_specialty_id, -> (specialty_id) { joins(:consulting_room).where(consulting_rooms: { specialty_id: specialty_id }) }
 
   private
   def assign_schedule_code
